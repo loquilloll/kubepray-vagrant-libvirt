@@ -22,6 +22,7 @@ CONFIG = {
   "worker_memory"  =>       ENV['WORKER_MEMORY'] || "16384",
   "worker_disk" =>          ENV['WORKER_DISK'] || "100", 
   "worker_mac" =>           ENV['WORKER_MAC'] || ":03",
+  "username" =>             ENV['USERNAME'] || `echo -n $(whoami)`,
 }
 
 # hwe_kernel = %{
@@ -217,7 +218,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell", name: "fix_dns", run: "once", inline: fix_dns
   # config.vm.provision "shell", name: "hwe_kernel", run: "once", privileged: true, reboot: true, inline: hwe_kernel
   config.vm.provision "file",
-    source:"/home/$USER/.vagrant.d/insecure_private_keys/vagrant.key.rsa",
+    source:"/home/#{CONFIG['username']}/.vagrant.d/insecure_private_keys/vagrant.key.rsa",
     destination: "/home/$USER/.ssh/id_rsa"
 
   config.trigger.before :up do |trigger|
