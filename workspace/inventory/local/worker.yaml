@@ -1,0 +1,23 @@
+all:
+  hosts:
+    cp01.c1.k8s.work:
+      ansible_connection: local
+      # ansible_host: 192.168.1.21
+      local_release_dir: '{{ ansible_env.HOME }}/releases'
+    worker01.c1.k8s.work:
+      ansible_connection: local
+      local_release_dir: '{{ansible_env.HOME}}/releases'
+kube_control_plane:
+  hosts:
+    cp01.c1.k8s.work:
+etcd:
+  hosts:
+    cp01.c1.k8s.work:
+kube_node:
+  hosts:
+    cp01.c1.k8s.work:
+    worker01.c1.k8s.work:
+k8s_cluster:
+  children:
+    kube_node:
+    kube_control_plane:
